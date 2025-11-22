@@ -16,3 +16,7 @@ Note: Printing functionality has been tested with a virtual printer, no physical
 Wi-Fi scanning has not been implemented yet due to time constraints.
 Web View Page
 Displays the website set in the Setting Page.
+
+# video
+
+https://drive.google.com/drive/folders/17TWY09_G_31Mhq4-dZHmpHsISqLSgUHr
