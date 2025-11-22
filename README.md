@@ -1,16 +1,18 @@
 # easacc_task
 
-A new Flutter project.
+This is a Flutter mobile application containing 3 main pages:
 
-## Getting Started
+Social Media Login Page
+Users can log in using Facebook or Google.
+Note: Facebook login is currently in development mode. It may not work for all users yet.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Setting Page
+Input field to set a web URL. This URL will be displayed in the web view page.
+User can update the URL.
+Access network devices (Wi-Fi / Bluetooth) such as printers.
+Available Bluetooth devices are displayed in a dropdown list.
+Users can connect to a selected device or test print.
+Note: Printing functionality has been tested with a virtual printer, no physical printer was used.
+Wi-Fi scanning has not been implemented yet due to time constraints.
+Web View Page
+Displays the website set in the Setting Page.
