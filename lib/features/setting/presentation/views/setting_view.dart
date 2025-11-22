@@ -51,195 +51,197 @@ class SettingView extends StatelessWidget {
           final cubit = context.read<SettingCubit>();
           return Form(
             key: cubit.formKey,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 25.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    LocaleKeys.websiteURL.tr(),
-                    style: AppTextStyles.textStyle16.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.blackColor,
-                    ),
-                  ),
-                  heightSpace(16.h),
-                  CustomTextFormField(
-                    ctrl: cubit.urlCtrl,
-                    keyboardType: TextInputType.text,
-                    hintText: "https:/example.com",
-                    autoValidateMode: AutovalidateMode.onUserInteraction,
-                    validator: AppValidator.urlValidator(),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                    ],
-                  ),
-                  heightSpace(30.h),
-                  CustomButton(
-                    onPressed: () {
-                      bool? isFormValidated = cubit.formKey.currentState
-                          ?.validate();
-
-                      if (isFormValidated!) {
-                        cubit.saveWebsiteURL();
-                      } else {
-                        debugPrint("Not Valid");
-                        return;
-                      }
-                    },
-                    isLoading: state is SettingLoading,
-                    text: LocaleKeys.save.tr(),
-                  ),
-                  heightSpace(20.h),
-                  CustomButton(
-                    onPressed: () {
-                      if (cubit.formKey.currentState!.validate()) {
-                        cubit.openWebsite(context);
-                      }
-                    },
-                    text: LocaleKeys.openWebsite.tr(),
-                    borderSide: const BorderSide(color: AppColors.primaryColor),
-                    isStoreButton: true,
-                    backgroundColor: AppColors.whiteColor,
-                    style: AppTextStyles.textStyle16.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primaryColor,
-                    ),
-                  ),
-                  heightSpace(50.h),
-                  Text(
-                    LocaleKeys.scanPrinters.tr(),
-                    style: AppTextStyles.textStyle16.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.blackColor,
-                    ),
-                  ),
-                  heightSpace(16.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomButton(
-                          onPressed: () {
-                            cubit.scanPrinters();
-                          },
-                          text: LocaleKeys.bluetooth.tr(),
-                        ),
-                      ),
-                      widthSpace(16.w),
-                      Expanded(
-                        child: CustomButton(
-                          onPressed: () {},
-                          text: LocaleKeys.wifi.tr(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  heightSpace(30.h),
-                  
-                  if (cubit.devices.isNotEmpty) ...[
-                    
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 20.w, horizontal: 25.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
-                      LocaleKeys.avaliblePrinters.tr(),
+                      LocaleKeys.websiteURL.tr(),
                       style: AppTextStyles.textStyle16.copyWith(
                         fontWeight: FontWeight.w500,
                         color: AppColors.blackColor,
                       ),
                     ),
                     heightSpace(16.h),
-
-                    if (state is PrinterScanning)
-                      Center(
-                        child: Image.asset(AppAssets.loading, height: context.height*0.1),
-                      ),
-                    if (cubit.devices.isNotEmpty)
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12.w),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppColors.primaryColor),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: DropdownButton<BluetoothInfo>(
-                          hint: Text(LocaleKeys.selectPrinter.tr()),
-                          isExpanded: true,
-                          value: cubit.devices.isEmpty
-                              ? null
-                              : cubit.devices.firstWhere(
-                                  (d) => d.macAdress == cubit.selectedMac,
-                                  orElse: () => cubit.devices.first,
-                                ),
-                          underline: const SizedBox(),
-                          items: cubit.devices.map((device) {
-                            return DropdownMenuItem<BluetoothInfo>(
-                              value: device,
-                              child: Text(device.name),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            if (value != null) {
-                              cubit.selectDevice(value);
-                            }
-                          },
-                        ),
-                      ),
-                    if (state is PrinterError)
-                      Text(
-                        state.message,
-                        style: const TextStyle(color: Colors.red),
-                      ),
-
+                    CustomTextFormField(
+                      ctrl: cubit.urlCtrl,
+                      keyboardType: TextInputType.text,
+                      hintText: "https:/example.com",
+                      autoValidateMode: AutovalidateMode.onUserInteraction,
+                      validator: AppValidator.urlValidator(),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                      ],
+                    ),
                     heightSpace(30.h),
-
+                    CustomButton(
+                      onPressed: () {
+                        bool? isFormValidated = cubit.formKey.currentState
+                            ?.validate();
+              
+                        if (isFormValidated!) {
+                          cubit.saveWebsiteURL();
+                        } else {
+                          debugPrint("Not Valid");
+                          return;
+                        }
+                      },
+                      isLoading: state is SettingLoading,
+                      text: LocaleKeys.save.tr(),
+                    ),
+                    heightSpace(20.h),
+                    CustomButton(
+                      onPressed: () {
+                        if (cubit.formKey.currentState!.validate()) {
+                          cubit.openWebsite(context);
+                        }
+                      },
+                      text: LocaleKeys.openWebsite.tr(),
+                      borderSide: const BorderSide(color: AppColors.primaryColor),
+                      isStoreButton: true,
+                      backgroundColor: AppColors.whiteColor,
+                      style: AppTextStyles.textStyle16.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                    heightSpace(50.h),
+                    Text(
+                      LocaleKeys.scanPrinters.tr(),
+                      style: AppTextStyles.textStyle16.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.blackColor,
+                      ),
+                    ),
+                    heightSpace(16.h),
                     Row(
                       children: [
                         Expanded(
                           child: CustomButton(
                             onPressed: () {
-                              if (cubit.selectedMac != null) {
-                                cubit.connectPrinter(
-                                  cubit.selectedMac!,
-                                  name: cubit.selectedName,
-                                );
-                              } else {
-                                showToast(
-                                  text: LocaleKeys.pleaseSelectPrinter.tr(),
-                                  state: ToastStates.warning,
-                                );
-                              }
+                              cubit.scanPrinters();
                             },
-                            isLoading: state is PrinterConnecting,
-                            text: LocaleKeys.connect.tr(),
+                            text: LocaleKeys.bluetooth.tr(),
                           ),
                         ),
                         widthSpace(16.w),
                         Expanded(
                           child: CustomButton(
-                            onPressed: () {
-                              if (cubit.selectedMac != null) {
-                                cubit.printReceipt();
-                              } else {
-                                showToast(
-                                  text: LocaleKeys.pleaseSelectPrinter.tr(),
-                                  state: ToastStates.warning,
-                                );
-                              }
-                            },
-                            isLoading: state is PrinterPrinting,
-                            text: LocaleKeys.testPrint.tr(),
-                            borderSide: const BorderSide(
-                              color: AppColors.primaryColor,
-                            ),
-                            isStoreButton: true,
-                            backgroundColor: AppColors.whiteColor,
-                            style: AppTextStyles.textStyle16.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.primaryColor,
-                            ),
+                            onPressed: () {},
+                            text: LocaleKeys.wifi.tr(),
                           ),
                         ),
                       ],
                     ),
+                    heightSpace(30.h),
+                    
+                    if (cubit.devices.isNotEmpty) ...[
+                      
+                      Text(
+                        LocaleKeys.avaliblePrinters.tr(),
+                        style: AppTextStyles.textStyle16.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.blackColor,
+                        ),
+                      ),
+                      heightSpace(16.h),
+              
+                      if (state is PrinterScanning)
+                        Center(
+                          child: Image.asset(AppAssets.loading, height: context.height*0.1),
+                        ),
+                      if (cubit.devices.isNotEmpty)
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 12.w),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: AppColors.primaryColor),
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: DropdownButton<BluetoothInfo>(
+                            hint: Text(LocaleKeys.selectPrinter.tr()),
+                            isExpanded: true,
+                            value: cubit.devices.isEmpty
+                                ? null
+                                : cubit.devices.firstWhere(
+                                    (d) => d.macAdress == cubit.selectedMac,
+                                    orElse: () => cubit.devices.first,
+                                  ),
+                            underline: const SizedBox(),
+                            items: cubit.devices.map((device) {
+                              return DropdownMenuItem<BluetoothInfo>(
+                                value: device,
+                                child: Text(device.name),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              if (value != null) {
+                                cubit.selectDevice(value);
+                              }
+                            },
+                          ),
+                        ),
+                      if (state is PrinterError)
+                        Text(
+                          state.message,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+              
+                      heightSpace(30.h),
+              
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CustomButton(
+                              onPressed: () {
+                                if (cubit.selectedMac != null) {
+                                  cubit.connectPrinter(
+                                    cubit.selectedMac!,
+                                    name: cubit.selectedName,
+                                  );
+                                } else {
+                                  showToast(
+                                    text: LocaleKeys.pleaseSelectPrinter.tr(),
+                                    state: ToastStates.warning,
+                                  );
+                                }
+                              },
+                              isLoading: state is PrinterConnecting,
+                              text: LocaleKeys.connect.tr(),
+                            ),
+                          ),
+                          widthSpace(16.w),
+                          Expanded(
+                            child: CustomButton(
+                              onPressed: () {
+                                if (cubit.selectedMac != null) {
+                                  cubit.printReceipt();
+                                } else {
+                                  showToast(
+                                    text: LocaleKeys.pleaseSelectPrinter.tr(),
+                                    state: ToastStates.warning,
+                                  );
+                                }
+                              },
+                              isLoading: state is PrinterPrinting,
+                              text: LocaleKeys.testPrint.tr(),
+                              borderSide: const BorderSide(
+                                color: AppColors.primaryColor,
+                              ),
+                              isStoreButton: true,
+                              backgroundColor: AppColors.whiteColor,
+                              style: AppTextStyles.textStyle16.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.primaryColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           );
